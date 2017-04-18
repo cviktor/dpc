@@ -1,6 +1,7 @@
 var http = require('http');
 var bl = require('bl');
 var net = require('net');
+var url = require('url');
 var fs = require('fs');
 var map = require('through2-map');
 
@@ -50,13 +51,44 @@ var server = http.createServer(function (request, response){
 });
 server.listen(process.argv[2]);*/
 
-var server = http.createServer(function (request, response) {
+/*var server = http.createServer(function (request, response) {
     response.writeHead(200, { 'content-type': 'text/plain' });
     request.pipe(map(function (chunk) {
         return chunk.toString().toUpperCase();
     })).pipe(response);
 });
+server.listen(process.argv[2]);*/
+
+var server = http.createServer(function (request, response) {
+    var uri = url.parse(request.url, true);
+
+    var date = new Date(uri.query.iso);
+    console.log(date);
+    console.log(uri);
+
+    if (uri.pathname === "/api/parsetime") {
+        res = {
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+            second: date.getSeconds()
+        };
+
+        response.writeHead(200, { 'content-type': 'text/json' });
+        response.end(JSON.stringify(res));
+
+    } else if (uri.pathname === "/api/unixtime") {
+        response.writeHead(200, { 'content-type': 'text/json' });
+        response.end(JSON.stringify({ unixtime: date.getTime() }));
+    }else{
+        response.writeHead(404);
+        response.end();
+    }
+
+});
+
 server.listen(process.argv[2]);
+
+
 
 
 

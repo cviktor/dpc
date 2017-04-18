@@ -5,7 +5,7 @@ var url = require('url');
 var fs = require('fs');
 var map = require('through2-map');
 
-var results = [{}, {}, {}]; //wtf...
+var results = [];
 var finished = 0;
 
 for (let i = 2; i < 5; i++) {

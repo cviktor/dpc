@@ -5,30 +5,33 @@ var url = require('url');
 var fs = require('fs');
 var map = require('through2-map');
 
-/*var results = [];
+var results = [{}, {}, {}]; //wtf...
+var finished = 0;
 
 for (let i = 2; i < 5; i++) {
     var url = process.argv[i];
-    
+
     http.get(url, function (response) {
-    response.setEncoding("utf8");
-    response.pipe(bl(function (err, data) {
-        if(err){
-            console.log("hiba");
-            return;
-        }
-
-        results.push(data.toString());
-
-        if(results.length == 3){
-            for (var j = 0; j < results.length; j++) {
-                var element = results[j];
-                console.log(element);
+        response.setEncoding("utf8");
+        response.pipe(bl(function (err, data) {
+            if (err) {
+                console.log("hiba");
+                return;
             }
-        }
-    }))
-});
-}*/
+
+            //nem volt kedvem ötletelni
+            results[i - 2] = data.toString();
+            finished++;
+
+            if (finished == 3) {
+                for (var j = 0; j < 3; j++) {
+                    var element = results[j];
+                    console.log(element);
+                }
+            }
+        }))
+    });
+}
 
 /*function pad(n) {
     return (n < 10) ? ("0" + n) : n;
@@ -59,7 +62,7 @@ server.listen(process.argv[2]);*/
 });
 server.listen(process.argv[2]);*/
 
-var server = http.createServer(function (request, response) {
+/*var server = http.createServer(function (request, response) {
     var uri = url.parse(request.url, true);
 
     var date = new Date(uri.query.iso);
@@ -86,7 +89,7 @@ var server = http.createServer(function (request, response) {
 
 });
 
-server.listen(process.argv[2]);
+server.listen(process.argv[2]);*/
 
 
 

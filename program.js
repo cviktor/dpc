@@ -50,5 +50,15 @@ var server = http.createServer(function (request, response){
 });
 server.listen(process.argv[2]);*/
 
+var server = http.createServer(function (request, response) {
+    response.writeHead(200, { 'content-type': 'text/plain' });
+    request.pipe(map(function (chunk) {
+        return chunk.toString().toUpperCase();
+    })).pipe(response);
+});
+server.listen(process.argv[2]);
+
+
+
 
 
